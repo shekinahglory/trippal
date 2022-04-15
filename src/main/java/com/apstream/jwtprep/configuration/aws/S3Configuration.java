@@ -21,7 +21,7 @@ public class S3Configuration {
     @Value("${aws.secret.key}")
     private String secretKey;
 
-    @Value("${s3.region.name")
+    @Value("${s3.region.name}")
     private String s3Region;
 
 
