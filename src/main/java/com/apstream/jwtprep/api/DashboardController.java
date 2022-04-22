@@ -16,4 +16,8 @@ public class DashboardController {
     public String afterAccountXCreated(){
         return "token";
     }
+
+    public String updateProfileImages(){
+        return "image updated";
+    }
 }
