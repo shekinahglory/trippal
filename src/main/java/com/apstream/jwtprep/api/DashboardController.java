@@ -12,8 +12,13 @@ public class DashboardController {
 
 
 
-
+   @RequestMapping("/token")
     public String afterAccountXCreated(){
-        return "token";
+        return
+                "token";
+    }
+
+    public String mainDashBoard(){
+       return "main value";
     }
 }
