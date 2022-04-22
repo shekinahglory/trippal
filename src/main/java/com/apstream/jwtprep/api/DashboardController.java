@@ -21,4 +21,8 @@ public class DashboardController {
     public String mainDashBoard(){
        return "main value";
     }
+
+    public String updateProfileImages(){
+        return "image updated";
+    }
 }
