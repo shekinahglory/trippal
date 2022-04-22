@@ -1,6 +1,7 @@
 package com.apstream.jwtprep.services;
 
 import com.apstream.jwtprep.domain.AppUser;
+import com.apstream.jwtprep.domain.ImageUrls;
 import com.apstream.jwtprep.domain.Role;
 
 import java.util.List;
@@ -14,6 +15,7 @@ public interface UserService {
     List<AppUser> getUsers();
     String checkUserByEmail(String email);
     String checkUserByUsername(String username);
+    String saveImage(ImageUrls imageUrl);
 
 
 }

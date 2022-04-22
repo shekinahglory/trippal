@@ -3,6 +3,7 @@ package com.apstream.jwtprep.api;
 
 import com.apstream.jwtprep.configuration.aws.FileStorage;
 import com.apstream.jwtprep.domain.AppUser;
+import com.apstream.jwtprep.domain.ImageUrls;
 import com.apstream.jwtprep.domain.Role;
 import com.apstream.jwtprep.domain.UserReceived;
 import com.apstream.jwtprep.services.UserService;
@@ -55,39 +56,48 @@ public class MainController {
     @PostMapping("/user/save/images")
     public String saveImages(@RequestParam MultipartFile file) throws IOException {
        String res = awsImageService.upLoadFile(file);
-
        AppUser user = userService.getUser(file.getOriginalFilename());
-       user.setImageUrl(res);
-//        log.info("rec {} " ,file);
-        return res;
+       if(user != null && res != null){
+           ImageUrls image = new ImageUrls();
+           image.setOwner(user);
+           image.setUrl(res);
+            if(user.getImageUrl() == null){
+                user.setImageUrl(res);
+            }
+           userService.saveImage(image);
+           log.info("rec {}", file.getOriginalFilename());
+           return tokenCreation.createToken(user);
+       } else {
+           return "error occurred" + user + " " + res;
+       }
+
+
+
     }
 
 
     @PostMapping("/user/save")
     public String saveUser(@RequestBody AppUser userReceived) throws IOException {
-
-        log.info("received {} ", userReceived);
-
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user/save").toUriString());
+//        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user/save").toUriString());
 //        return ResponseEntity.created(uri).body(tokenCreation.createToken(userService.saveUser(userReceived)));
-
-       AppUser user = userService.saveUser(userReceived);
-       if (user != null){
-           return "account created";
+        AppUser user = new AppUser();
+        if(userReceived != null && userReceived.getUsername() != null){
+            user = userService.saveUser(userReceived);
+        }
+       if (user.getUsername() != null){
+           return user.getUsername();
        }else{
            return  "failed creation";
        }
 
     }
 
-    @PostMapping("/user/checkusername")
+    @PostMapping("/user/checkUsernameExist")
     public String checkUsername(@RequestParam String username){
-
-
         return userService.checkUserByUsername(username);
     }
 
-    @PostMapping("/user/checkemail")
+    @PostMapping("/user/checkEmailExist")
     public String checkEmail(@RequestParam String email){
         return userService.checkUserByEmail(email);
     }

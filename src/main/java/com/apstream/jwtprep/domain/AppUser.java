@@ -2,6 +2,8 @@ package com.apstream.jwtprep.domain;
 
 
 import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
@@ -9,6 +11,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -37,6 +40,10 @@ public class AppUser {
     private String job;
     private int income;
     private String education;
+
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Fetch(value= FetchMode.SELECT)
+    private Set<ImageUrls> imagesUrls;
 
 
 //

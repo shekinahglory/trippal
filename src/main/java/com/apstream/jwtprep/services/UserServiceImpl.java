@@ -1,7 +1,9 @@
 package com.apstream.jwtprep.services;
 
 import com.apstream.jwtprep.domain.AppUser;
+import com.apstream.jwtprep.domain.ImageUrls;
 import com.apstream.jwtprep.domain.Role;
+import com.apstream.jwtprep.repository.ImageRepository;
 import com.apstream.jwtprep.repository.RoleRepo;
 import com.apstream.jwtprep.repository.UserRepo;
 import lombok.extern.slf4j.Slf4j;
@@ -28,11 +30,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepo userRepo;
     private final RoleRepo roleRepo;
     private final PasswordEncoder passwordEncoder;
+    private final ImageRepository imageRepository;
 
-    public UserServiceImpl(UserRepo userRepo, RoleRepo roleRepo, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepo userRepo, RoleRepo roleRepo, PasswordEncoder passwordEncoder, ImageRepository imageRepository) {
         this.userRepo = userRepo;
         this.roleRepo = roleRepo;
         this.passwordEncoder = passwordEncoder;
+        this.imageRepository = imageRepository;
     }
 
     @Override
@@ -60,7 +64,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public AppUser getUser(String username) {
         log.info("getting user {} ", username);
-        return userRepo.findByEmail(username);
+        return userRepo.findByUsername(username);
     }
 
     @Override
@@ -90,6 +94,19 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         } else {
             return "no";
         }
+    }
+
+
+    @Override
+    public String saveImage(ImageUrls imageUrl){
+
+        if (imageUrl != null){
+            imageRepository.save(imageUrl);
+            return "image saved";
+        } else {
+            return "error";
+        }
+
     }
 
     @Override
