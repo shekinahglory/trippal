@@ -23,6 +23,8 @@ public class DashboardController {
     }
 
     public String updateProfileImages(){
+	    String codeFromWindow = "testing";
         return "image updated";
     }
 }
+
