@@ -76,6 +76,12 @@ public class MainController {
     }
 
 
+    @RequestMapping("/test")
+    public String testCon(){
+       return "connected";
+    }
+
+
     @PostMapping("/user/save")
     public String saveUser(@RequestBody AppUser userReceived) throws IOException {
 //        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user/save").toUriString());

@@ -18,6 +18,15 @@ public class DashboardController {
                 "token";
     }
 
+
+    public void getUserInfo(){
+
+    }
+
+    public void getUserImages(){
+
+    }
+
     public String mainDashBoard(){
        return "main value";
     }

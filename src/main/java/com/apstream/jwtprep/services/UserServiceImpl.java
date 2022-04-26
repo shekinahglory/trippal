@@ -1,6 +1,7 @@
 package com.apstream.jwtprep.services;
 
 import com.apstream.jwtprep.domain.AppUser;
+import com.apstream.jwtprep.domain.AppUserInfo;
 import com.apstream.jwtprep.domain.ImageUrls;
 import com.apstream.jwtprep.domain.Role;
 import com.apstream.jwtprep.repository.ImageRepository;
@@ -20,6 +21,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 
 @Service @Transactional
@@ -31,6 +33,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final RoleRepo roleRepo;
     private final PasswordEncoder passwordEncoder;
     private final ImageRepository imageRepository;
+
+    private AppUser user;
 
     public UserServiceImpl(UserRepo userRepo, RoleRepo roleRepo, PasswordEncoder passwordEncoder, ImageRepository imageRepository) {
         this.userRepo = userRepo;
@@ -57,7 +61,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public void addRoleToUser(String username, String roleName) {
         log.info("adding role {} to user {}", roleName, username);
-         AppUser user = userRepo.findByEmail(username);
+          user = userRepo.findByEmail(username);
          
     }
 
@@ -76,7 +80,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public String checkUserByEmail(String email) {
 
-        AppUser user = userRepo.findByEmail(email);
+         user = userRepo.findByEmail(email);
         if (user != null){
             return "exist";
         }else {
@@ -88,7 +92,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public String checkUserByUsername(String username) {
 
-        AppUser user = userRepo.findByUsername(username);
+         user = userRepo.findByUsername(username);
         if (user != null){
             return "exist";
         } else {
@@ -110,8 +114,20 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    public Set<ImageUrls> getUserImages(String username) {
+        user = userRepo.findByUsername(username);
+        Set<ImageUrls> imageUrls = user.getImagesUrls();
+        return imageUrls;
+    }
+
+    @Override
+    public AppUserInfo getUserInfo() {
+        return null;
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        AppUser user = userRepo.findByEmail(username);
+         user = userRepo.findByEmail(username);
 
         if (user == null){
             log.error("User not found in the database");
