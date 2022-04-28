@@ -11,6 +11,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -26,6 +27,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 
 @Slf4j
+@CrossOrigin(origins = "http://localhost:4200")
 public class CustomAuthenticationFiler extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
@@ -40,13 +42,22 @@ public class CustomAuthenticationFiler extends UsernamePasswordAuthenticationFil
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
-        log.info("usernam is {}" , username);
+        log.info("username is {}" , username);
         log.info("password is {}", password);
 
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
 
 
         return authenticationManager.authenticate(authenticationToken);
+    }
+
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
+
+        response.setStatus(401);
+        response.setContentType(APPLICATION_JSON_VALUE);
+
+        new ObjectMapper().writeValue(response.getOutputStream(), "failed login");
     }
 
     @Override
@@ -60,7 +71,7 @@ public class CustomAuthenticationFiler extends UsernamePasswordAuthenticationFil
 
         String access_token = JWT.create()
                 .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() +100 * 60 * 1000))
+                .withExpiresAt(new Date(System.currentTimeMillis() +10 * 60 * 1000))
                 .withIssuer(request.getRequestURL().toString())
                 .withClaim("roles", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
                 .sign(algorithm);

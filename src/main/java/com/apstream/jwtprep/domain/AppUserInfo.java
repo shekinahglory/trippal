@@ -14,7 +14,6 @@ public class AppUserInfo {
 
     private String username;
     private String email;
-    private String password;
     private String imageUrl;
     private String gender;
     private String state;

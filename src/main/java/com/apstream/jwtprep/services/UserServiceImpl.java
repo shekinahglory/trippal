@@ -121,6 +121,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    public List<AppUser> getAllUsersInState(String state) {
+        List<AppUser> usersByStates = userRepo.findAllByState(state);
+        return usersByStates;
+    }
+
+    @Override
     public AppUserInfo getUserInfo() {
         return null;
     }

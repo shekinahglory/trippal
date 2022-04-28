@@ -21,6 +21,8 @@ public interface UserService {
 
     Set<ImageUrls> getUserImages(String username);
 
+    List<AppUser> getAllUsersInState(String state);
+
     AppUserInfo getUserInfo();
 
 

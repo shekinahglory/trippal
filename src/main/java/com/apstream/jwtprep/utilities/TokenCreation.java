@@ -26,7 +26,7 @@ public class TokenCreation {
 
         String access_token = JWT.create()
                 .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() +100 * 60 * 1000))
+                .withExpiresAt(new Date(System.currentTimeMillis() +10 * 60 * 1000))
                 .withIssuer("localhost:8080/api/signup/user/save")
                 .withClaim("roles", user.getRoles().stream().map(Role::getName).collect(Collectors.toList()))
                 .sign(algorithm);
