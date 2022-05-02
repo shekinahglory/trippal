@@ -32,7 +32,6 @@ public class CustomUserDetailService implements UserDetailsService {
 
 
         AppUser user = userRepo.findByEmail(username);
-
         if (user == null){
             log.error("User not found in the database");
             throw new UsernameNotFoundException("User not fond in the database");

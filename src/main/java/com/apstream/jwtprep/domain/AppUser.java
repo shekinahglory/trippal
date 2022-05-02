@@ -1,6 +1,9 @@
 package com.apstream.jwtprep.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -17,15 +20,14 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AppUser {
+public class AppUser  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
+    private String password;
     private String username;
     private String email;
-    private String password;
     private String imageUrl;
     private String gender;
     private String state;
@@ -43,6 +45,7 @@ public class AppUser {
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Fetch(value= FetchMode.SELECT)
+    @JsonManagedReference
     private Set<ImageUrls> imagesUrls;
 
 
@@ -53,12 +56,40 @@ public class AppUser {
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<Role> roles = new ArrayList<>();
 
+    @JsonIgnore
+    public Collection<Role> getRoles() {
+        return roles;
+    }
+
+    @JsonProperty
+    public void setRoles(Collection<Role> roles) {
+        this.roles = roles;
+    }
 
     public AppUser(String username, String password) {
 
-        this.username = username;
+
+
+
+    }
+
+    @JsonIgnore
+    public String getPassword() {
+        return password;
+    }
+
+    @JsonProperty
+    public void setPassword(String password) {
         this.password = password;
+    }
 
+    @JsonIgnore
+    public Long getId() {
+        return id;
+    }
 
+    @JsonProperty
+    public void setId(Long id) {
+        this.id = id;
     }
 }

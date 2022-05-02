@@ -9,7 +9,7 @@ import java.sql.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AppUserInfo {
+public class AppUserInfo extends AppUser {
 
 
     private String username;
