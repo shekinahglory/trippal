@@ -1,12 +1,7 @@
 package com.apstream.jwtprep.services;
 
-import com.apstream.jwtprep.domain.AppUser;
-import com.apstream.jwtprep.domain.AppUserInfo;
-import com.apstream.jwtprep.domain.ImageUrls;
-import com.apstream.jwtprep.domain.Role;
-import com.apstream.jwtprep.repository.ImageRepository;
-import com.apstream.jwtprep.repository.RoleRepo;
-import com.apstream.jwtprep.repository.UserRepo;
+import com.apstream.jwtprep.domain.*;
+import com.apstream.jwtprep.repository.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -34,13 +29,22 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final ImageRepository imageRepository;
 
+    private final CountryRepo countryRepo;
+
+    private final StateRepo stateRepo;
+
+    private final CitiRepo citiRepo;
+
     private AppUser user;
 
-    public UserServiceImpl(UserRepo userRepo, RoleRepo roleRepo, PasswordEncoder passwordEncoder, ImageRepository imageRepository) {
+    public UserServiceImpl(UserRepo userRepo, RoleRepo roleRepo, PasswordEncoder passwordEncoder, ImageRepository imageRepository, CountryRepo countryRepo, StateRepo stateRepo, CitiRepo citiRepo) {
         this.userRepo = userRepo;
         this.roleRepo = roleRepo;
         this.passwordEncoder = passwordEncoder;
         this.imageRepository = imageRepository;
+        this.countryRepo = countryRepo;
+        this.stateRepo = stateRepo;
+        this.citiRepo = citiRepo;
     }
 
     @Override
@@ -124,6 +128,33 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public List<AppUser> getAllUsersInState(String state) {
         List<AppUser> usersByStates = userRepo.findAllByState(state);
         return usersByStates;
+    }
+
+    @Override
+    public List<AppUser> getAllUsersInCity(String city) {
+
+        List<AppUser> usersByCity = userRepo.findALlByCity(city);
+        return usersByCity;
+    }
+
+    @Override
+    public List<States> getAllStateInCountry(String countryId) {
+
+        List<States> states = stateRepo.findByCountryId(countryId);
+        return states;
+    }
+
+    @Override
+    public List<Cities> getAllCitiesInState(String stateId) {
+        List<Cities> cities  = citiRepo.findAllByStateId(stateId);
+        return cities;
+    }
+
+    @Override
+    public List<Countries> getAllCountries() {
+
+        List<Countries> countries = countryRepo.findAll();
+        return countries;
     }
 
     @Override

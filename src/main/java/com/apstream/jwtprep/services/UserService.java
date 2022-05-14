@@ -1,9 +1,6 @@
 package com.apstream.jwtprep.services;
 
-import com.apstream.jwtprep.domain.AppUser;
-import com.apstream.jwtprep.domain.AppUserInfo;
-import com.apstream.jwtprep.domain.ImageUrls;
-import com.apstream.jwtprep.domain.Role;
+import com.apstream.jwtprep.domain.*;
 
 import java.util.List;
 import java.util.Set;
@@ -22,6 +19,13 @@ public interface UserService {
     Set<ImageUrls> getUserImages(String username);
 
     List<AppUser> getAllUsersInState(String state);
+
+    List<AppUser> getAllUsersInCity(String city);
+    List<States> getAllStateInCountry(String countryId);
+
+    List<Cities> getAllCitiesInState(String stateId);
+
+    List<Countries> getAllCountries();
 
     AppUserInfo getUserInfo();
 

@@ -24,8 +24,7 @@ public class DashboardController {
 
     @RequestMapping("/token")
     public String afterAccountXCreated(){
-        return
-                "token";
+        return "token";
     }
 
 
@@ -39,10 +38,15 @@ public class DashboardController {
     }
 
 
-
-    @GetMapping("connection/states")
+    @GetMapping("/connection/states")
     public List<AppUser> getAllUsersByState(@RequestParam String state){
         List<AppUser> result = userService.getAllUsersInState(state);
+        return result;
+    }
+
+    @GetMapping("/connection/city")
+    public List<AppUser> getAllUsersByCity(@RequestParam String city){
+        List<AppUser> result = userService.getAllUsersInCity(city);
         return result;
     }
 

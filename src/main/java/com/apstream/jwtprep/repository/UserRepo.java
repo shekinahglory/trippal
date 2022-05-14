@@ -13,4 +13,6 @@ public interface UserRepo extends JpaRepository<AppUser, Long> {
 
 
     List<AppUser> findAllByState(String state);
+
+    List<AppUser> findALlByCity(String city);
 }

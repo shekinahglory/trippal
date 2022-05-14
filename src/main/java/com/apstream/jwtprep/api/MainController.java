@@ -2,10 +2,7 @@ package com.apstream.jwtprep.api;
 
 
 import com.apstream.jwtprep.configuration.aws.FileStorage;
-import com.apstream.jwtprep.domain.AppUser;
-import com.apstream.jwtprep.domain.ImageUrls;
-import com.apstream.jwtprep.domain.Role;
-import com.apstream.jwtprep.domain.UserReceived;
+import com.apstream.jwtprep.domain.*;
 import com.apstream.jwtprep.services.UserService;
 import com.apstream.jwtprep.utilities.TokenCreation;
 import com.auth0.jwt.JWT;
@@ -75,6 +72,27 @@ public class MainController {
 
     }
 
+    @GetMapping("/countries")
+    public List<Countries> getAllCountries(){
+        List<Countries> countries = userService.getAllCountries();
+        return countries;
+    }
+
+
+    @GetMapping("/states")
+    public List<States> getStates(@RequestParam String country){
+
+        List<States> states = userService.getAllStateInCountry(country);
+
+        return states;
+
+    }
+
+    @GetMapping("/cities")
+    public List<Cities> getCities(@RequestParam String state){
+        List<Cities> cities = userService.getAllCitiesInState(state);
+        return cities;
+    }
 
     @RequestMapping("/test")
     public String testCon(){
@@ -87,6 +105,7 @@ public class MainController {
 //        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user/save").toUriString());
 //        return ResponseEntity.created(uri).body(tokenCreation.createToken(userService.saveUser(userReceived)));
         AppUser user = new AppUser();
+         log.info("date is {}", userReceived.getBirthDate());
         if(userReceived != null && userReceived.getUsername() != null){
             user = userService.saveUser(userReceived);
         }
