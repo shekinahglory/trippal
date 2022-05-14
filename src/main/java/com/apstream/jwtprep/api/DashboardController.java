@@ -23,14 +23,14 @@ public class DashboardController {
 
 
     @RequestMapping("/token")
-    public String afterAccountXCreated(){
+    public String afterAccountXCreated() {
         return
                 "token";
     }
 
 
     @GetMapping("userinfo")
-    public AppUser getUserInfo(@RequestParam String username){
+    public AppUser getUserInfo(@RequestParam String username) {
 
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -39,24 +39,23 @@ public class DashboardController {
     }
 
 
-
     @GetMapping("connection/states")
-    public List<AppUser> getAllUsersByState(@RequestParam String state){
+    public List<AppUser> getAllUsersByState(@RequestParam String state) {
         List<AppUser> result = userService.getAllUsersInState(state);
         return result;
     }
 
     @GetMapping("/userImages")
-    public void getUserImages(){
+    public void getUserImages() {
 
     }
 
-    public String mainDashBoard(){
-       return "main value";
+    public String mainDashBoard() {
+        return "main value";
     }
 
-    public String updateProfileImages(){
-	    String codeFromWindow = "testing";
+    public String updateProfileImages() {
+        String codeFromWindow = "testing";
         return "image updated";
     }
 }
