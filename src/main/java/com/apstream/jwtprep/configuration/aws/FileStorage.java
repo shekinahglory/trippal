@@ -11,6 +11,8 @@ import java.io.*;
 import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
+
 
 @AllArgsConstructor
 @Service
@@ -27,6 +29,7 @@ public class FileStorage {
     }
 
     private File convertMultiPartToFile(MultipartFile file ) throws IOException {
+
         File convFile = new File(file.getOriginalFilename());
         FileOutputStream fos = new FileOutputStream(convFile);
         fos.write(file.getBytes());
@@ -36,7 +39,11 @@ public class FileStorage {
     }
 
     private String generateFileName(MultipartFile file){
-        return System.currentTimeMillis() + "-" + file.getOriginalFilename();
+
+        Random random = new Random();
+
+        int rand = random.nextInt(1000);
+        return System.currentTimeMillis() + "-" + file.getOriginalFilename() + rand;
     }
 
     public String upLoadFile(MultipartFile multipartFile){
